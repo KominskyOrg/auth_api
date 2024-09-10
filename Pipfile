@@ -3,6 +3,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[dev-packages]
+flask-swagger-ui = "*"
+flake8 = "*"
+black = "*"
+
 [packages]
 alembic = "*"
 flask = "*"
@@ -13,6 +18,8 @@ flask-migrate = "*"
 flask-cors = "*"
 jwt = "*"
 requests = "*"
+cryptography = "*"
+flask-swagger-ui = "*"
 
 [requires]
 python_version = "3.12"
