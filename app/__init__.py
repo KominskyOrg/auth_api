@@ -1,9 +1,11 @@
 from flask import Flask
 from app.routes import auth_bp
 from app.config import get_config
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
 
     # Load configuration
     app.config.from_object(get_config())

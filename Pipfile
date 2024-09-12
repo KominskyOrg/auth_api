@@ -9,16 +9,10 @@ flake8 = "*"
 black = "*"
 
 [packages]
-alembic = "*"
 flask = "*"
-flask-sqlalchemy = "*"
-pymysql = "*"
 python-dotenv = "*"
-flask-migrate = "*"
 flask-cors = "*"
-jwt = "*"
 requests = "*"
-cryptography = "*"
 flask-swagger-ui = "*"
 
 [requires]

@@ -18,25 +18,31 @@ help:
 	@echo "  make test           Run tests"
 	@echo "  make clean          Clean up Docker containers and images"
 
-# Build the Docker images
-.PHONY: build
-build:
-	$(DOCKER_COMPOSE) build
+.PHONY: up down build logs
 
-# Start the Docker containers
-.PHONY: up
+# Bring up all services
 up:
-	$(DOCKER_COMPOSE) up -d
+	docker-compose -f ../devops_admin/docker-compose.yml up --build
 
-# Stop the Docker containers
-.PHONY: down
+# Bring down all services
 down:
-	$(DOCKER_COMPOSE) down
+	docker-compose -f ../devops_admin/docker-compose.yml down
 
-# Show logs from the Docker containers
-.PHONY: logs
+# Build all services or a specific service
+build:
+	@if [ -z "$(service)" ]; then \
+		docker-compose -f ../devops_admin/docker-compose.yml build; \
+	else \
+		docker-compose -f ../devops_admin/docker-compose.yml build $(service); \
+	fi
+
+# View logs for all services or a specific service
 logs:
-	$(DOCKER_COMPOSE) logs -f
+	@if [ -z "$(service)" ]; then \
+		docker-compose -f ../devops_admin/docker-compose.yml logs -f; \
+	else \
+		docker-compose -f ../devops_admin/docker-compose.yml logs -f $(service); \
+	fi
 
 # Run flake8 for linting
 .PHONY: lint

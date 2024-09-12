@@ -4,21 +4,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
-    BASE_URL = os.getenv('BASE_URL', 'http://localhost:5000')
+    BASE_URL = os.getenv('BASE_URL', 'http://jkom.com')
+    AUTH_SERVICE_PORT=5001
     
 class LocalConfig(Config):
     DEBUG = True
-    BASE_URL = 'http://localhost:5000'
+    BASE_URL = 'http://jkom.com'
     ENV = 'development'
 
 class DevConfig(Config):
     DEBUG = False
-    BASE_URL = 'http://localhost:5000'
+    BASE_URL = 'http://jkom.com'
     ENV = 'development'
 
 class ProdConfig(Config):
     DEBUG = False
+    BASE_URL = 'http://jkom.com'
     ENV = 'production'
 
 def get_config():
