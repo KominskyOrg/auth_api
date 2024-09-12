@@ -4,16 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-flask-swagger-ui = "*"
 flake8 = "*"
 black = "*"
+flask-swagger-ui = "*"
+autopep8 = "*"
 
 [packages]
 flask = "*"
 python-dotenv = "*"
 flask-cors = "*"
 requests = "*"
-flask-swagger-ui = "*"
 
 [requires]
 python_version = "3.12"

@@ -54,12 +54,19 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                username:
                   type: string
-                  example: user@example.com
+                  example: user123
                 password:
                   type: string
                   example: encrypted_password_string
+                salt:
+                  type: string
+                  example: random_salt_string
+              required:
+                - username
+                - password
+                - salt
       responses:
         '201':
           description: Successful registration
