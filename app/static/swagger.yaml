@@ -21,7 +21,7 @@ paths:
                   type: string
                   example: encrypted_password_string
       responses:
-        '200':
+        "200":
           description: Successful login
           content:
             application/json:
@@ -34,7 +34,7 @@ paths:
                   token:
                     type: string
                     example: mock_jwt_token
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -54,21 +54,33 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
-                  example: user123
+                  example: user@example.com
                 password:
                   type: string
                   example: encrypted_password_string
                 salt:
                   type: string
                   example: random_salt_string
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                username:
+                  type: string
+                  example: johndoe123
               required:
-                - username
+                - email
                 - password
                 - salt
+                - first_name
+                - last_name
+                - username
       responses:
-        '201':
+        "201":
           description: Successful registration
           content:
             application/json:
@@ -78,6 +90,26 @@ paths:
                   message:
                     type: string
                     example: Registration successful
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email is already in use
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
   /api/auth/reset-password:
     post:
       summary: Request password reset
@@ -92,7 +124,7 @@ paths:
                   type: string
                   example: user@example.com
       responses:
-        '200':
+        "200":
           description: Password reset link sent
           content:
             application/json:
@@ -123,7 +155,7 @@ paths:
                   type: string
                   example: encrypted_new_password_string
       responses:
-        '200':
+        "200":
           description: Password reset successful
           content:
             application/json:
@@ -133,7 +165,7 @@ paths:
                   message:
                     type: string
                     example: Password reset successful
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -157,7 +189,7 @@ paths:
                   type: string
                   example: existing_refresh_token
       responses:
-        '200':
+        "200":
           description: Token refreshed successfully
           content:
             application/json:
@@ -167,7 +199,7 @@ paths:
                   token:
                     type: string
                     example: new_jwt_token
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
