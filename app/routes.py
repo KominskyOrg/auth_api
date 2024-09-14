@@ -49,3 +49,9 @@ def reset_password(token):
 def refresh_token():
     data = request.json
     return make_auth_request("refresh-token", data)
+
+
+@auth_bp.route("/deactivate-account", methods=["POST"])
+def deactivate_account():
+    data = request.json
+    return make_auth_request("deactivate-account", data)
