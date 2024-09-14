@@ -1,8 +1,17 @@
 import os
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 class Config:
     BASE_URL = os.getenv("BASE_URL", "http://jkom.com")
@@ -29,7 +38,7 @@ class ProdConfig(Config):
 
 def get_config():
     env = os.getenv("FLASK_ENV", "local")
-    print(f"FLASK_ENV: {env}")  # Debugging line
+    logger.debug(f"FLASK_ENV: {env}")  # Replaced print with logger.debug
     if env == "local":
         return LocalConfig
     elif env == "development":
@@ -37,4 +46,5 @@ def get_config():
     elif env == "production":
         return ProdConfig
     else:
+        logger.error(f"Unknown environment: {env}")
         raise ValueError(f"Unknown environment: {env}")
