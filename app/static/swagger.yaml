@@ -43,7 +43,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Invalid email or password
+                    example: Invalid credentials
   /api/auth/register:
     post:
       summary: User registration
@@ -259,3 +259,17 @@ paths:
                   message:
                     type: string
                     example: Internal server error
+  /api/auth/health:
+    get:
+      summary: Health check for Auth API
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK

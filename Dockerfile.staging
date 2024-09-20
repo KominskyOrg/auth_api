@@ -1,6 +1,9 @@
 # Stage 1: Builder
 FROM python:3.12-slim AS builder
 
+# Set environment variables for pipenv
+ENV PIPENV_VENV_IN_PROJECT=1
+
 # Set the working directory
 WORKDIR /app
 
@@ -17,13 +20,14 @@ RUN pip install --no-cache-dir pipenv
 COPY Pipfile Pipfile.lock ./
 
 # Install dependencies including development packages
-RUN pipenv install --system --dev
+RUN pipenv install --system --deploy --dev
 
-# Stage 2: Staging Runtime
-FROM python:3.12.2-slim AS staging
+# Stage 2: Development
+FROM python:3.12-slim AS development
 
 # Set environment variables
 ENV FLASK_APP=app
+ENV FLASK_ENV=development
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
@@ -35,14 +39,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy system site-packages from builder
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+# Copy dependencies from builder
+COPY --from=builder /app/.venv /app/.venv
 
-# Copy Python binaries from builder (including Flask executable)
-COPY --from=builder /usr/local/bin /usr/local/bin
+# Set PATH to include the virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Copy the application code
+# Copy the rest of the application code
 COPY . .
+
+# Install any additional development tools if necessary
+# RUN pip install additional-dev-tools
 
 # Create a non-root user for security
 RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup
@@ -53,12 +60,12 @@ RUN chown -R appuser:appgroup /app
 # Switch to the non-root user
 USER appuser
 
-# Expose the staging port
+# Expose the development port
 EXPOSE 5000
 
-# Healthcheck (optional for staging)
+# Healthcheck (optional for development)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5000/api/auth/health || exit 1
+  CMD curl -f http://localhost:5000/health || exit 1
 
-# Command to run the application with Flask's development server and hot reloading
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000", "--reload"]
+# Run the application with Flask's development server
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]

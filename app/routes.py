@@ -59,3 +59,10 @@ def deactivate_account():
     data = request.json
     logger.info("Deactivate account request received")
     return make_auth_request("deactivate-account", data)
+
+@auth_bp.route("/health", methods=["GET"])
+def health():
+    """
+    Health check endpoint to verify that the auth_api service is running.
+    """
+    return jsonify({"status": "OK"}), 200
