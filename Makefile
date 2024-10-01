@@ -7,6 +7,9 @@ FLAKE8 = $(PIPENV) flake8
 BLACK = $(PIPENV) black
 AUTOPEP8 = $(PIPENV) autopep8
 
+ENV ?= staging
+TF_DIR = tf
+
 # Default target
 .PHONY: help
 help:
@@ -40,13 +43,8 @@ build:
 		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml build $(service); \
 	fi
 
-# View logs for all services or a specific service
 logs:
-	@if [ -z "$(service)" ]; then \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml logs -f; \
-	else \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml logs -f $(service); \
-	fi
+	@kubectl get pods -n $(ENV) -l "app=auth-api" -o jsonpath="{.items[*].metadata.name}" | xargs -I {} kubectl logs -f {} -n $(ENV)
 
 # Run flake8 for linting
 lint:
@@ -71,3 +69,22 @@ test:
 # Clean up Docker containers and images
 clean:
 	$(DOCKER_COMPOSE) down --rmi all --volumes --remove-orphans
+
+# Terraform Targets
+.PHONY: init plan apply destroy
+
+init:
+	@echo "Initializing Terraform for $(ENV) environment..."
+	cd $(TF_DIR) && terraform init -backend-config=backend-$(ENV).tfbackend
+
+plan:
+	@echo "Running Terraform plan for $(ENV) environment..."
+	cd $(TF_DIR) && terraform plan -var env=$(ENV)
+
+apply:
+	@echo "Applying Terraform changes for $(ENV) environment..."
+	cd $(TF_DIR) && terraform apply -var env=$(ENV)
+
+destroy:
+	@echo "Destroying Terraform-managed infrastructure for $(ENV) environment..."
+	mcd $(TF_DIR) && terraform destroy -var env=$(ENV)

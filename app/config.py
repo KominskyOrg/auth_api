@@ -18,31 +18,28 @@ class Config:
     AUTH_SERVICE_PORT = 5001
 
 
-class LocalConfig(Config):
-    DEBUG = True
-    BASE_URL = "http://jkom.com"
-    ENV = "development"
-
-
 class DevConfig(Config):
-    DEBUG = False
-    BASE_URL = "http://jkom.com"
+    DEBUG = True
     ENV = "development"
+
+
+class StagingConfig(Config):
+    DEBUG = False
+    ENV = "staging"
 
 
 class ProdConfig(Config):
     DEBUG = False
-    BASE_URL = "http://jkom.com"
     ENV = "production"
 
 
 def get_config():
-    env = os.getenv("FLASK_ENV", "local")
-    logger.debug(f"FLASK_ENV: {env}")  # Replaced print with logger.debug
-    if env == "local":
-        return LocalConfig
-    elif env == "development":
+    env = os.getenv("FLASK_ENV", "development")
+    logger.debug(f"FLASK_ENV: {env}")
+    if env == "development":
         return DevConfig
+    elif env == "staging":
+        return StagingConfig
     elif env == "production":
         return ProdConfig
     else:
