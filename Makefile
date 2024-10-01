@@ -43,13 +43,8 @@ build:
 		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml build $(service); \
 	fi
 
-# View logs for all services or a specific service
 logs:
-	@if [ -z "$(service)" ]; then \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml logs -f; \
-	else \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml logs -f $(service); \
-	fi
+	@kubectl get pods -n $(ENV) -l "app=auth-api" -o jsonpath="{.items[*].metadata.name}" | xargs -I {} kubectl logs -f {} -n $(ENV)
 
 # Run flake8 for linting
 lint:

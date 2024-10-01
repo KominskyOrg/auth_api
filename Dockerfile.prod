@@ -7,6 +7,8 @@ WORKDIR /app
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pipenv
@@ -56,9 +58,9 @@ USER appuser
 # Expose the production port
 EXPOSE 5000
 
-# Healthcheck to ensure the application is running
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5000/health || exit 1
 
-# Command to run the application using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--workers", "4"]
+# Run the application with uWSGI
+CMD ["uwsgi", "--ini", "uwsgi.ini"]

@@ -15,3 +15,8 @@ variable "env" {
   type        = string
   default     = "staging"
 }
+
+variable "auth_api_ecr_url" {
+  description = "Auth Api ECR repository URL"
+  type        = string
+}

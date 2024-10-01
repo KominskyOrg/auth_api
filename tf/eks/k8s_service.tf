@@ -1,16 +1,16 @@
 resource "kubernetes_service" "auth_api" {
   metadata {
-    name      = "auth_api"
-    namespace = kubernetes_namespace.auth.metadata[0].name
+    name      = "auth-api"
+    namespace = var.env
   }
 
   spec {
     selector = {
-      app = "auth_api"
+      app = "auth-api"
     }
 
     port {
-      port        = 443
+      port        = 8080
       target_port = 5000
     }
 

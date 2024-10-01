@@ -19,8 +19,9 @@ terraform {
 }
 
 locals {
+  env = "staging"
   tags = {
-    env     = var.env
+    env     = local.env
     service = "auth_api"
   }
 }
@@ -52,3 +53,10 @@ data "terraform_remote_state" "infrastructure" {
     dynamodb_table = "tf-state-table"
   }
 }
+
+module "eks" {
+  source           = "./eks"
+  env              = local.env
+  auth_api_ecr_url = aws_ecr_repository.auth_api.repository_url
+}
+
