@@ -36,5 +36,4 @@ def create_app():
     logger.info("Flask application created successfully")
     return app
 
-# Add this line to expose the Flask app to uWSGI
 app = create_app()
