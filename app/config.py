@@ -14,7 +14,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 class Config:
-    BASE_URL = os.getenv("BASE_URL", "http://jkom.com")
+    BASE_URL = os.getenv("BASE_URL", "http://localhost")
     AUTH_SERVICE_PORT = 5001
 
 
