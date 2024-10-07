@@ -1,5 +1,4 @@
 locals {
-
   stack_name        = "auth"
   microservice_type = "api"
   node_selector     = "backend"

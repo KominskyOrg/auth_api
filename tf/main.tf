@@ -64,6 +64,6 @@ module "eks" {
     AUTH_SERVICE_URL = "https://${var.env}.jaredkominsky.com/service/auth"
     FLASK_ENV        = local.env
   }
-  readiness_probe_path = "/auth/api/health"
-  liveness_probe_path  = "/auth/api/health"
+  readiness_probe_path = "/api/auth/health"
+  liveness_probe_path  = "/api/auth/health"
 }
