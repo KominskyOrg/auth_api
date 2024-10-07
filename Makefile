@@ -1,6 +1,7 @@
 # Makefile
 
 # Variables
+REPO_NAME ?= auth_api
 DOCKER_COMPOSE = docker-compose
 PIPENV = pipenv run
 FLAKE8 = $(PIPENV) flake8
@@ -73,7 +74,6 @@ BACKEND_DIR ?= ./tf
 AWS_REGION ?= us-east-1
 IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
 AWS_ACCOUNT_ID ?= $(AWS_ACCOUNT_ID)
-REPO_NAME ?= auth_app
 ECR_REPO := $(REPO_NAME)_$(ENV)
 
 .PHONY: init plan build push ecr-login
