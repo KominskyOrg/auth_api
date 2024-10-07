@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "auth_api" {
-  name                 = "auth_api_${local.env}"
+resource "aws_ecr_repository" "app_ecr" {
+  name                 = "${local.service_name}_${local.env}"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
