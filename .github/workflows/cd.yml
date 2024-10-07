@@ -12,5 +12,5 @@ on:
 
 jobs:
   build-and-deploy:
-    uses: KominskyOrg/kom_reusable_workflows/.github/workflows/eks_deployment.yml@v1.1
+    uses: KominskyOrg/kom_reusable_workflows/.github/workflows/eks_deployment.yml@v1.2
     secrets: inherit
