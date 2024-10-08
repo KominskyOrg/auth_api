@@ -61,9 +61,9 @@ module "eks" {
   service_port        = 8080
   service_target_port = 5000
   env_vars = {
-    AUTH_SERVICE_URL = "https://${local.stack_name}-service.${var.env}.svc.cluster.local:8080"
+    AUTH_SERVICE_URL = "https://${local.stack_name}-service.${var.env}.svc.cluster.local:8080/service/${local.stack_name}"
     FLASK_ENV        = local.env
   }
-  readiness_probe_path = "/health"
-  liveness_probe_path  = "/health"
+  readiness_probe_path = "/${local.microservice_type}/${local.stack_name}/health"
+  liveness_probe_path  = "/${local.microservice_type}/${local.stack_name}/health"
 }

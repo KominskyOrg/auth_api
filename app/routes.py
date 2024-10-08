@@ -4,10 +4,10 @@ import logging
 import os
 from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 
-auth_bp = Blueprint("auth", __name__)
+auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
 AUTH_SERVICE_URL = os.getenv(
-    "AUTH_SERVICE_URL", "http://auth_service:5001"
+    "AUTH_SERVICE_URL", "http://auth_service:5001/service/auth"
 )
 
 logger = logging.getLogger(__name__)
