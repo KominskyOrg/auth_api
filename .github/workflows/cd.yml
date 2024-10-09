@@ -9,6 +9,10 @@ on:
     branches:
       - main
       - staging
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   build-and-deploy:

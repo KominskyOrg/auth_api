@@ -21,28 +21,11 @@ help:
 	@echo "  make format         Run black for code formatting"
 	@echo "  make format-fix     Fix code formatting using black"
 	@echo "  make test           Run tests"
+	@echo "  make test-cov       Run tests with coverage"
+	@echo "  make install        Install dependencies"
 	@echo "  make clean          Clean up Docker containers and images"
 
 .PHONY: up down build logs lint lint-fix format format-fix test clean
-
-# Bring up all services
-up:
-	$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml up --build
-
-# Bring down all services
-down:
-	$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml down
-
-# Build all services or a specific service
-build:
-	@if [ -z "$(service)" ]; then \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml build; \
-	else \
-		$(DOCKER_COMPOSE) -f ../devops_admin/docker-compose.yml build $(service); \
-	fi
-
-logs:
-	@kubectl get pods -n $(ENV) -l "app=auth-api" -o jsonpath="{.items[*].metadata.name}" | xargs -I {} kubectl logs -f {} -n $(ENV)
 
 # Run flake8 for linting
 lint:
@@ -60,9 +43,17 @@ format:
 format-fix:
 	$(BLACK) .
 
+# Install dependencies
+install:
+	pipenv install
+
 # Run tests
 test:
 	$(DOCKER_COMPOSE) run --rm api pytest
+
+# Run tests with coverage
+test-cov:
+	pipenv run pytest --cov-report=xml
 
 # Clean up Docker containers and images
 clean:
