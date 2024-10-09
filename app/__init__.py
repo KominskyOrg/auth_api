@@ -7,6 +7,7 @@ import logging
 # Get the logger
 logger = logging.getLogger(__name__)
 
+
 def create_app():
     logger.info("Creating Flask application")
     app = Flask(__name__)
@@ -35,5 +36,6 @@ def create_app():
 
     logger.info("Flask application created successfully")
     return app
+
 
 app = create_app()
