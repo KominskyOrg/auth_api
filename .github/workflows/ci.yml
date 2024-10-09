@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install pipenv
+        run: pip install pipenv
+
       - name: Cache pip and pipenv caches
         uses: actions/cache@v4
         with:
@@ -65,8 +68,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install pipenv
+        run: pip install pipenv
+
       - name: Cache pip and pipenv caches
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
@@ -91,6 +97,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Install pipenv
+        run: pip install pipenv
 
       - name: Cache pip and pipenv caches
         uses: actions/cache@v4
