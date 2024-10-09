@@ -18,16 +18,11 @@ terraform {
   backend "s3" {}
 }
 
-locals {
-  env = "staging"
-  tags = {
-    env     = local.env
-    service = "auth_api"
-  }
-}
-
 provider "aws" {
   region = "us-east-1"
+  default_tags {
+    tags = local.tags
+  }
 }
 
 data "aws_eks_cluster" "cluster" {
@@ -55,8 +50,20 @@ data "terraform_remote_state" "infrastructure" {
 }
 
 module "eks" {
-  source           = "./eks"
+  source           = "git::https://github.com/KominskyOrg/kom_tf_modules.git//eks?ref=v1.6"
+  eks_service_name = "${local.stack_name}-${local.microservice_type}"
   env              = local.env
-  auth_api_ecr_url = aws_ecr_repository.auth_api.repository_url
+  ecr_url          = aws_ecr_repository.app_ecr.repository_url
+  image_tag        = var.image_tag
+  node_selector = {
+    role = local.node_selector
+  }
+  service_port        = 8080
+  service_target_port = 5000
+  env_vars = {
+    AUTH_SERVICE_URL = "http://${local.stack_name}-service.${var.env}.svc.cluster.local:8080/service/${local.stack_name}"
+    FLASK_ENV        = local.env
+  }
+  readiness_probe_path = "/${local.microservice_type}/${local.stack_name}/health"
+  liveness_probe_path  = "/${local.microservice_type}/${local.stack_name}/health"
 }
-
