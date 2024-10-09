@@ -21,6 +21,8 @@ help:
 	@echo "  make format         Run black for code formatting"
 	@echo "  make format-fix     Fix code formatting using black"
 	@echo "  make test           Run tests"
+	@echo "  make test-cov       Run tests with coverage"
+	@echo "  make install        Install dependencies"
 	@echo "  make clean          Clean up Docker containers and images"
 
 .PHONY: up down build logs lint lint-fix format format-fix test clean
@@ -60,9 +62,17 @@ format:
 format-fix:
 	$(BLACK) .
 
+# Install dependencies
+install:
+	pipenv install
+
 # Run tests
 test:
 	$(DOCKER_COMPOSE) run --rm api pytest
+
+# Run tests with coverage
+test-cov:
+	pipenv run pytest --cov-report=xml
 
 # Clean up Docker containers and images
 clean:

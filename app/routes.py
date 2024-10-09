@@ -25,7 +25,7 @@ def make_auth_request(endpoint, data):
             response_data = response.json()
         except ValueError:
             logger.error(f"Invalid JSON response from {url}")
-            response_data = {"error": "Invalid response from authentication service"}
+            response_data = {"message": "Invalid response from authentication service"}
             return jsonify(response_data), 502  # Bad Gateway
         
         # Check response status code
@@ -34,32 +34,33 @@ def make_auth_request(endpoint, data):
             return jsonify(response_data), response.status_code
         elif 400 <= response.status_code < 500:
             # Client error; pass through the response
-            error_message = response_data.get("error", "Client error")
+            error_message = response_data.get("message", "Client error")
             logger.warning(f"Client error from {url}: {error_message}")
-            return jsonify({"error": error_message}), response.status_code
+            json_response = {"message": error_message}
+            logger.debug(f"Returning JSON response: {json_response}")  # Added debug log
+            return jsonify(json_response), response.status_code
         elif 500 <= response.status_code < 600:
             # Server error; return 503 Service Unavailable
             logger.error(f"Server error from {url}: {response_data}")
-            return jsonify({"error": "Authentication service encountered an error"}), 503
+            return jsonify({"message": "Authentication service encountered an error"}), 503
         else:
             # Unexpected status code
             logger.error(f"Unexpected status code {response.status_code} from {url}")
-            return jsonify({"error": "Unexpected response from authentication service"}), 502
+            return jsonify({"message": "Unexpected response from authentication service"}), 502
 
     except (ConnectionError, Timeout) as e:
         logger.error(f"Connection error when connecting to {url}: {e}")
-        return jsonify({"error": "Authentication service is unavailable"}), 503
+        return jsonify({"message": "Authentication service is unavailable"}), 503
     except HTTPError as e:
-        # This block is optional since HTTPError is handled above
         logger.error(f"HTTP error when connecting to {url}: {e}")
-        return jsonify({"error": "HTTP error occurred"}), 502
+        return jsonify({"message": "HTTP error occurred"}), 502
     except RequestException as e:
         logger.error(f"Request exception when connecting to {url}: {e}")
-        return jsonify({"error": "An error occurred while connecting to authentication service"}), 502
+        return jsonify({"message": "An error occurred while connecting to authentication service"}), 502
     except Exception as e:
         # Catch-all for any other exceptions
         logger.exception(f"Unexpected error when connecting to {url}: {e}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"message": "Internal server error"}), 500
 
 # Route definitions remain unchanged
 @auth_bp.route("/login", methods=["POST"])

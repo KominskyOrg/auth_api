@@ -8,6 +8,9 @@ flake8 = "*"
 black = "*"
 flask-swagger-ui = "*"
 autopep8 = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
 
 [packages]
 flask = "*"
