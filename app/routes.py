@@ -72,11 +72,8 @@ def make_auth_request(endpoint, data):
         return jsonify({"message": "HTTP error occurred"}), 502
     except RequestException as e:
         logger.error(f"Request exception when connecting to {url}: {e}")
-        error_message = (
-            "An error occurred while connecting to authentication service"
-        )
+        error_message = "An error occurred while connecting to authentication service"
         return jsonify({"message": error_message}), 502
-
     except Exception as e:
         # Catch-all for any other exceptions
         logger.exception(f"Unexpected error when connecting to {url}: {e}")
