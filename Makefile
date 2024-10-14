@@ -103,14 +103,17 @@ install:
 # Terraform Targets
 # ==============================================================================
 
+# Initialize Terraform
 init:
 	@echo "Initializing Terraform for $(ENV) environment..."
 	cd $(BACKEND_DIR) && terraform init -var env=$(ENV) -backend-config=backend-$(ENV).tfbackend
 
+# Generate Terraform Plan
 plan:
 	@echo "Generating Terraform plan for $(ENV) environment..."
 	cd $(BACKEND_DIR) && terraform plan -out=tfplan -var env=$(ENV) -var image_tag=$(IMAGE_TAG)
 
+# Generate Terraform Apply
 apply:
 	@echo "Applying Terraform configuration for $(ENV) environment..."
 	cd $(BACKEND_DIR) && terraform apply tfplan
