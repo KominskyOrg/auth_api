@@ -14,7 +14,7 @@ logger.addHandler(handler)
 
 class Config:
     BASE_URL = os.getenv("BASE_URL", "http://localhost")
-    AUTH_SERVICE_PORT = 5001
+    STACK_SERVICE_PORT = 5000
 
 
 class DevConfig(Config):

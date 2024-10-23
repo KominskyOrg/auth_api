@@ -1,5 +1,5 @@
 bucket         = "kominskyorg-staging-tf-state"
-key            = "auth_api-staging.tfstate"
+key            = "stack_api-staging.tfstate"
 region         = "us-east-1"
 dynamodb_table = "tf-state-lock-staging"
 encrypt        = true

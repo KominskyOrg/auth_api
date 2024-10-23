@@ -1,5 +1,5 @@
 from flask import Flask
-from app.routes import auth_bp
+from app.routes import stack_bp
 from app.config import get_config
 from flask_cors import CORS
 import logging
@@ -19,8 +19,8 @@ def create_app():
     logger.info(f"Loaded configuration: {config.__name__}")
 
     # Register blueprints
-    app.register_blueprint(auth_bp)
-    logger.info("Registered auth blueprint")
+    app.register_blueprint(stack_bp)
+    logger.info("Registered stack blueprint")
 
     # Conditionally register Swagger UI in development environment
     if app.config["ENV"] == "development":
@@ -29,7 +29,7 @@ def create_app():
         SWAGGER_URL = "/api/docs"
         API_URL = "/static/swagger.yaml"
         swaggerui_blueprint = get_swaggerui_blueprint(
-            SWAGGER_URL, API_URL, config={"app_name": "Auth API"}
+            SWAGGER_URL, API_URL, config={"app_name": "Stack API"}
         )
         app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
         logger.info("Registered Swagger UI blueprint")

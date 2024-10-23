@@ -5,7 +5,7 @@
 # ==============================================================================
 
 # General
-REPO_NAME ?= auth_api
+REPO_NAME ?= stack_api
 
 # Docker
 DOCKER_COMPOSE = docker-compose -f ../devops_admin/docker-compose.yml
