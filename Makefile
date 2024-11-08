@@ -118,6 +118,10 @@ apply:
 	@echo "Applying Terraform configuration for $(ENV) environment..."
 	cd $(BACKEND_DIR) && terraform apply tfplan
 
+destroy:
+	@echo "Destroying Terraform-managed infrastructure for $(ENV) environment..."
+	cd $(BACKEND_DIR) && terraform destroy -var env=$(ENV)
+
 # ==============================================================================
 # AWS ECR Targets
 # ==============================================================================
