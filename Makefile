@@ -45,6 +45,7 @@ help:
 	@echo "  make test           Run tests"
 	@echo "  make test-cov       Run tests with coverage"
 	@echo "  make install        Install dependencies"
+	@echo "  make install-dev    Install dependencies with dev tools"
 	@echo "  make clean          Clean up Docker containers and images"
 	@echo "  make init           Initialize Terraform"
 	@echo "  make plan           Generate Terraform plan"
@@ -98,6 +99,9 @@ test-cov:
 
 install:
 	pipenv install
+
+install-dev:
+	pipenv sync --dev
 
 # ==============================================================================
 # Terraform Targets

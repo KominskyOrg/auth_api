@@ -1,36 +1,35 @@
 import os
-import logging
 from dotenv import load_dotenv
+import logging
 
+# Load environment variables from .env file
 load_dotenv()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
 
 class Config:
-    BASE_URL = os.getenv("BASE_URL", "http://localhost")
+    BASE_URL = os.getenv("BASE_URL", "http://auth_service")
+    AUTH_SERVICE_URL = os.getenv(
+        "AUTH_SERVICE_URL", "http://auth_service:5001/service/auth"
+    )
     AUTH_SERVICE_PORT = 5001
-
+    LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 class DevConfig(Config):
     DEBUG = True
     ENV = "development"
-
+    LOG_LEVEL = "DEBUG"
+    logger.debug(f"DevConfig: {Config.AUTH_SERVICE_URL}")
 
 class StagingConfig(Config):
     DEBUG = False
     ENV = "staging"
-
+    LOG_LEVEL = "INFO"
 
 class ProdConfig(Config):
     DEBUG = False
     ENV = "production"
-
+    LOG_LEVEL = "WARNING"
 
 def get_config():
     env = os.getenv("FLASK_ENV", "development")
@@ -44,3 +43,6 @@ def get_config():
     else:
         logger.error(f"Unknown environment: {env}")
         raise ValueError(f"Unknown environment: {env}")
+
+# Determine the current configuration
+config = get_config()
