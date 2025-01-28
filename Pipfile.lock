@@ -181,12 +181,12 @@
         },
         "kom-python-core": {
             "hashes": [
-                "sha256:01d0047ac837fe5802f4a2e8869932a15fc38eb62f2e20e59dc27a7fe34d49fa",
-                "sha256:e51f50ea8600ebc39ee02de9759c6cfb60c653289dbcd7d2c401f11e3ea95f15"
+                "sha256:50de046279f3e1f9def3573404f033d6ecd35c53aeff9cc09f0d49b68a387f00",
+                "sha256:7f0ec071caaab93606b914e5be1baa1be5f4e9baf06ec6242c6735ec53b83e95"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.12'",
-            "version": "==0.1.15"
+            "version": "==0.1.16"
         },
         "markupsafe": {
             "hashes": [
