@@ -16,6 +16,7 @@ python-dotenv = "*"
 flask-cors = "*"
 requests = "*"
 uwsgi = "*"
+kom-python-core = "*"
 
 [requires]
 python_version = "3.12"

@@ -2,21 +2,32 @@ from flask import Flask
 from app.routes import auth_bp
 from app.config import get_config
 from flask_cors import CORS
+from kom_python_core import LoggingConfig
 import logging
+import os
 
 # Get the logger
 logger = logging.getLogger(__name__)
 
 
 def create_app():
-    logger.info("Creating Flask application")
     app = Flask(__name__)
     CORS(app)
-
-    # Load configuration
+    
     config = get_config()
     app.config.from_object(config)
     logger.info(f"Loaded configuration: {config.__name__}")
+    
+    # **Set the LOG_LEVEL in the environment based on the selected config**
+    os.environ['LOG_LEVEL'] = config.LOG_LEVEL
+
+    # Now configure logging using the updated LOG_LEVEL
+    logger_config = LoggingConfig(log_level=config.LOG_LEVEL, environment=config.ENV)
+    logger_config.configure()
+    
+    logger.info("Creating Flask application")
+
+    # Load configuration
 
     # Register blueprints
     app.register_blueprint(auth_bp)
